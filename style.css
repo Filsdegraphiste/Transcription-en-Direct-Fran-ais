@@ -15,7 +15,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    height: 100vh; /* Take full browser height */
+    margin: 0;
 }
 
 .container {
@@ -29,6 +30,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    height: 100%; /* Container takes full height of the screen */
 }
 
 h1 {
@@ -85,8 +87,8 @@ input[type="range"] {
 }
 
 .transcription-box {
-    flex-grow: 1; /* Ensure it takes the remaining space */
-    overflow-y: auto;
+    flex-grow: 1; /* Takes the remaining available space */
+    overflow-y: auto; /* Ensures scrolling */
     background-color: #f1f1f1;
     padding: 15px;
     font-size: 20px;
@@ -95,17 +97,18 @@ input[type="range"] {
     text-align: left;
     width: 100%;
     margin-top: 20px;
+    height: 300px; /* Ensure a minimum height */
 }
 
 /* Responsive Styles */
 @media (max-width: 768px) {
     body {
-        padding: 10px; /* Avoid content hitting edges */
+        padding: 10px;
     }
 
     .container {
         padding: 15px;
-        margin: 0 10px; /* Slight margin for smaller screens */
+        margin: 0 10px;
     }
 
     h1 {

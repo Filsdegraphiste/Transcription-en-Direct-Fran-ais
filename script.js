@@ -33,12 +33,12 @@ if ('webkitSpeechRecognition' in window) {
         }
         // Update the transcription box with both final and interim texts
         transcriptionBox.textContent = texteFinal + ' ' + texteIntermediaire;
-        scrollToEnd(); // Ensure the latest text is visible
+        scrollToEnd(); // Ensure the latest text is visible by scrolling
     };
 
     recognition.onend = function () {
         console.log("Recognition ended");
-        enCoursDeReconnaissance = false; // Set recognition to inactive
+        enCoursDeReconnaissance = false;
         toggleBtn.textContent = "Démarrer la Transcription";
     };
 
@@ -78,5 +78,5 @@ if ('webkitSpeechRecognition' in window) {
 
 // Function to scroll to the end of the transcription box
 function scrollToEnd() {
-    transcriptionBox.scrollTop = transcriptionBox.scrollHeight;
+    transcriptionBox.scrollTop = transcriptionBox.scrollHeight; // Always scroll to the latest text
 }
