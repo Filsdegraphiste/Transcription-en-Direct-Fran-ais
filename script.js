@@ -12,16 +12,14 @@ if ('webkitSpeechRecognition' in window) {
     recognition = new webkitSpeechRecognition();
     recognition.lang = 'fr-FR';  // Langue : Français
     recognition.interimResults = true;
-    recognition.continuous = true; // Continuous recognition
+    recognition.continuous = true;
 
-    // When recognition starts
-    recognition.onstart = function() {
+    recognition.onstart = () => {
         enCoursDeReconnaissance = true;
         toggleBtn.textContent = "Arrêter la Transcription";
     };
 
-    // Handle speech results
-    recognition.onresult = function(event) {
+    recognition.onresult = (event) => {
         let texteIntermediaire = ''; // Temporary holder for interim results
         for (let i = event.resultIndex; i < event.results.length; ++i) {
             const result = event.results[i];
@@ -37,35 +35,32 @@ if ('webkitSpeechRecognition' in window) {
         scrollToEnd(); // Ensure the latest text is visible
     };
 
-    // When recognition ends
-    recognition.onend = function() {
+    recognition.onend = () => {
+        enCoursDeReconnaissance = false;
+        toggleBtn.textContent = "Démarrer la Transcription";
+
+        // Automatically restart the recognition to maintain continuous transcription
         if (enCoursDeReconnaissance) {
-            console.log("Recognition ended, restarting...");
-            recognition.start(); // Restart if it's still supposed to be active
-        } else {
-            toggleBtn.textContent = "Démarrer la Transcription";
+            recognition.start();
         }
     };
 
-    // Start/Stop transcription based on user interaction
-    toggleBtn.addEventListener('click', function() {
+    toggleBtn.addEventListener('click', () => {
         if (enCoursDeReconnaissance) {
-            recognition.stop(); // Explicitly stop
-            enCoursDeReconnaissance = false;
+            recognition.stop();
+            enCoursDeReconnaissance = false; // Ensure we stop properly
         } else {
-            recognition.start(); // Start on user action
+            recognition.start();
             enCoursDeReconnaissance = true;
         }
     });
 
-    // Clear the transcription text
-    clearBtn.addEventListener('click', function() {
+    clearBtn.addEventListener('click', () => {
         texteFinal = ''; // Clear the final text
         transcriptionBox.textContent = '';
     });
 
-    // Change text size
-    tailleTexteSlider.addEventListener('input', function() {
+    tailleTexteSlider.addEventListener('input', () => {
         transcriptionBox.style.fontSize = `${tailleTexteSlider.value}px`;
     });
 } else {
