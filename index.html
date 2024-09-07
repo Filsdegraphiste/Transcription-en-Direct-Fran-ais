@@ -3,108 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; connect-src 'self';">
+    
+    <!-- Updated CSP with 'unsafe-eval' as a last resort for libraries using eval -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval' https://cdnjs.cloudflare.com; style-src 'self' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; connect-src 'self';">
+    
     <title>Transcription en Direct</title>
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .container {
-            text-align: center;
-        }
-        #transcription {
-            width: 100%;
-            height: 200px;
-            overflow-y: auto;
-            background-color: #f5f5f5;
-            border: 1px solid #ddd;
-            padding: 10px;
-            font-size: 16px;
-        }
-    </style>
+    
+    <!-- Custom styles for layout and responsiveness -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- FontAwesome icons (from a trusted CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <h1>Transcription en Direct</h1>
-        <button id="toggleBtn">Démarrer la Transcription</button>
-        <div id="transcription"></div>
+        <h1>Transcription en Direct (Français)</h1>
+        <div class="controls">
+            <!-- Button to start/stop transcription -->
+            <button id="toggleBtn">
+                <i class="fas fa-microphone"></i> Démarrer la Transcription
+            </button>
+            <!-- Button to clear the transcription box -->
+            <button id="clearBtn">
+                <i class="fas fa-trash-alt"></i> Effacer la Conversation
+            </button>
+            <!-- Slider to control text size in the transcription box -->
+            <div class="text-size-control">
+                <label for="tailleTexte">
+                    <i class="fas fa-text-height"></i> Taille du Texte:
+                </label>
+                <input type="range" id="tailleTexte" min="16" max="32" value="20">
+            </div>
+        </div>
+        <!-- Transcription output box -->
+        <div id="transcription" class="transcription-box"></div>
     </div>
-
-    <script>
-        const toggleBtn = document.getElementById('toggleBtn');
-        const transcriptionBox = document.getElementById('transcription');
-        let recognition;
-        let enCoursDeReconnaissance = false;
-        let texteFinal = '';
-
-        // Set up WebRTC getUserMedia
-        const startMicrophone = async () => {
-            try {
-                // Request microphone access
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                console.log("Microphone access granted");
-                return stream;
-            } catch (err) {
-                console.error("Error accessing microphone: " + err);
-                alert('Microphone access denied.');
-            }
-        };
-
-        // Set up SpeechRecognition
-        const setupSpeechRecognition = () => {
-            recognition = new webkitSpeechRecognition();
-            recognition.lang = 'fr-FR';  // Langue : Français
-            recognition.interimResults = true;
-            recognition.continuous = true;
-
-            recognition.onstart = function () {
-                enCoursDeReconnaissance = true;
-                toggleBtn.textContent = "Arrêter la Transcription";
-                console.log("Recognition started");
-            };
-
-            recognition.onresult = function (event) {
-                let texteIntermediaire = '';
-                for (let i = event.resultIndex; i < event.results.length; ++i) {
-                    const result = event.results[i];
-                    if (result.isFinal) {
-                        texteFinal += result[0].transcript;
-                    } else {
-                        texteIntermediaire += result[0].transcript;
-                    }
-                }
-                transcriptionBox.textContent = texteFinal + ' ' + texteIntermediaire;
-                transcriptionBox.scrollTop = transcriptionBox.scrollHeight;
-            };
-
-            recognition.onend = function () {
-                console.log("Recognition ended");
-                enCoursDeReconnaissance = false;
-                toggleBtn.textContent = "Démarrer la Transcription";
-            };
-
-            recognition.onerror = function (event) {
-                console.error("Recognition error:", event.error);
-                if (event.error === 'not-allowed') {
-                    alert('Microphone access is not allowed. Please enable microphone permissions.');
-                }
-            };
-        };
-
-        toggleBtn.addEventListener('click', async function () {
-            if (!enCoursDeReconnaissance) {
-                await startMicrophone();  // Ensure microphone access
-                setupSpeechRecognition();
-                recognition.start();
-            } else {
-                recognition.stop();
-            }
-        });
-    </script>
+    
+    <!-- External script file for JavaScript logic -->
+    <script src="script.js"></script>
 </body>
 </html>
