@@ -9,16 +9,17 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh; /* Changed from height to min-height for better content overflow handling */
     background-color: #f5f5f5;
     color: #333;
 }
 
 .container {
-    width: 90%;
-    max-width: 600px;
+    width: 100%;
+    max-width: 1200px;
     background-color: #ffffff;
     padding: 20px;
+    margin: 0 20px; /* Added some margin to prevent touching screen edges */
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
@@ -86,15 +87,53 @@ input[type="range"] {
     border-radius: 5px;
     border: 1px solid #ddd;
     margin-top: 20px;
-}
-.transcription-box {
-    height: 300px;
-    overflow-y: auto;
-    background-color: #f1f1f1;
-    padding: 15px;
-    font-size: 20px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
     text-align: left; /* Ensure text is always left-aligned */
     width: 100%; /* Ensure it fills the container */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    body {
+        padding: 10px; /* Adds padding on mobile to avoid content hitting edges */
+    }
+
+    .container {
+        padding: 15px;
+        margin: 0 10px; /* Slight margin for smaller screens */
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 8px 16px;
+        max-width: 100%; /* Make sure buttons scale for smaller screens */
+    }
+
+    .transcription-box {
+        font-size: 18px; /* Slightly reduce font size for mobile */
+        height: 250px; /* Reduce height for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 18px;
+    }
+
+    button {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+
+    .transcription-box {
+        font-size: 16px;
+        height: 200px;
+    }
+
+    .text-size-control input[type="range"] {
+        width: 80px; /* Adjust the size of the range slider for smaller screens */
+    }
 }
