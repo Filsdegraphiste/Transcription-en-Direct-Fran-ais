@@ -14,11 +14,13 @@ if ('webkitSpeechRecognition' in window) {
     recognition.interimResults = true;
     recognition.continuous = true; // Continuous recognition
 
+    // When recognition starts
     recognition.onstart = function() {
         enCoursDeReconnaissance = true;
         toggleBtn.textContent = "Arrêter la Transcription";
     };
 
+    // Handle speech results
     recognition.onresult = function(event) {
         let texteIntermediaire = ''; // Temporary holder for interim results
         for (let i = event.resultIndex; i < event.results.length; ++i) {
@@ -35,27 +37,34 @@ if ('webkitSpeechRecognition' in window) {
         scrollToEnd(); // Ensure the latest text is visible
     };
 
+    // When recognition ends
     recognition.onend = function() {
-        enCoursDeReconnaissance = false;
-        toggleBtn.textContent = "Démarrer la Transcription";
+        if (enCoursDeReconnaissance) {
+            console.log("Recognition ended, restarting...");
+            recognition.start(); // Restart if it's still supposed to be active
+        } else {
+            toggleBtn.textContent = "Démarrer la Transcription";
+        }
     };
 
+    // Start/Stop transcription based on user interaction
     toggleBtn.addEventListener('click', function() {
         if (enCoursDeReconnaissance) {
-            recognition.stop();
-            enCoursDeReconnaissance = false; // Ensure we stop properly
+            recognition.stop(); // Explicitly stop
+            enCoursDeReconnaissance = false;
         } else {
-            // User interaction explicitly triggers recognition
-            recognition.start();
+            recognition.start(); // Start on user action
             enCoursDeReconnaissance = true;
         }
     });
 
+    // Clear the transcription text
     clearBtn.addEventListener('click', function() {
         texteFinal = ''; // Clear the final text
         transcriptionBox.textContent = '';
     });
 
+    // Change text size
     tailleTexteSlider.addEventListener('input', function() {
         transcriptionBox.style.fontSize = `${tailleTexteSlider.value}px`;
     });
