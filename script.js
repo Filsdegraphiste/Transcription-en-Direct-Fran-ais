@@ -6,6 +6,7 @@ const tailleTexteSlider = document.getElementById('tailleTexte');
 let recognition;
 let enCoursDeReconnaissance = false; // Track if recognition is active
 let texteFinal = ''; // Store the final results
+let autoRestart = true; // Control whether recognition should restart automatically
 
 // Vérification de la compatibilité du navigateur avec SpeechRecognition API
 if ('webkitSpeechRecognition' in window) {
@@ -38,8 +39,13 @@ if ('webkitSpeechRecognition' in window) {
 
     recognition.onend = function () {
         console.log("Recognition ended");
-        enCoursDeReconnaissance = false;
-        toggleBtn.textContent = "Démarrer la Transcription";
+        if (autoRestart && enCoursDeReconnaissance) {
+            recognition.start(); // Restart recognition automatically if it ended unexpectedly
+            console.log("Recognition restarted");
+        } else {
+            enCoursDeReconnaissance = false;
+            toggleBtn.textContent = "Démarrer la Transcription";
+        }
     };
 
     recognition.onerror = function (event) {
@@ -51,14 +57,16 @@ if ('webkitSpeechRecognition' in window) {
 
     // Start/Stop transcription based on user interaction
     toggleBtn.addEventListener('click', function () {
-        if (enCoursDeReconnaissance) {
-            recognition.stop(); // Explicitly stop
-            enCoursDeReconnaissance = false;
-            console.log("Recognition stopped");
-        } else {
+        if (!enCoursDeReconnaissance) {
+            autoRestart = true; // Allow recognition to restart automatically
             recognition.start(); // Start on user action
             enCoursDeReconnaissance = true;
             console.log("Starting recognition...");
+        } else {
+            autoRestart = false; // Disable automatic restart when user manually stops
+            recognition.stop(); // Stop recognition when user clicks the button
+            enCoursDeReconnaissance = false;
+            console.log("Recognition stopped by user");
         }
     });
 
