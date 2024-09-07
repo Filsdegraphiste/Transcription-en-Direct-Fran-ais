@@ -5,7 +5,7 @@ const tailleTexteSlider = document.getElementById('tailleTexte');
 
 let recognition;
 let enCoursDeReconnaissance = false; // Track if recognition is active
-let texteFinal = ''; // To store the final results
+let texteFinal = ''; // Store the final results
 
 // Vérification de la compatibilité du navigateur avec SpeechRecognition API
 if ('webkitSpeechRecognition' in window) {
@@ -73,10 +73,4 @@ if ('webkitSpeechRecognition' in window) {
         transcriptionBox.style.fontSize = `${tailleTexteSlider.value}px`;
     });
 } else {
-    alert('La reconnaissance vocale n\'est pas supportée dans ce navigateur. Essayez avec Google Chrome.');
-}
-
-// Function to scroll to the end of the transcription box
-function scrollToEnd() {
-    transcriptionBox.scrollTop = transcriptionBox.scrollHeight;
-}
+    alert('La reconnaissance vocale n\'est pas support)
