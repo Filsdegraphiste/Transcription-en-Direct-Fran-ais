@@ -9,15 +9,16 @@ html, body {
     background-color: #f5f5f5;
     color: #333;
     height: 100%;
+    overflow: hidden; /* Prevent scrolling */
 }
 
 body {
     display: flex;
-    justify-content: center;
+    flex-direction: column; /* Make sure the content is aligned vertically */
+    justify-content: flex-start; /* Align content to the top of the page */
     align-items: center;
     height: 100vh; /* Full height of the viewport */
     margin: 0;
-    overflow: hidden; /* Prevents the body from scrolling */
 }
 
 .container {
@@ -31,8 +32,8 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 90%; /* Container takes full height of the viewport */
-    overflow: hidden; /* Prevents overflow inside the container */
+    height: calc(100vh - 20px); /* Ensure the container height fits the viewport with some margin */
+    overflow: hidden;
 }
 
 h1 {
