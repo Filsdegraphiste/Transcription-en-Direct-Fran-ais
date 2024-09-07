@@ -12,14 +12,17 @@ if ('webkitSpeechRecognition' in window) {
     recognition = new webkitSpeechRecognition();
     recognition.lang = 'fr-FR';  // Langue : Français
     recognition.interimResults = true;
-    recognition.continuous = true;
+    recognition.continuous = true; // Continuous recognition
 
-    recognition.onstart = () => {
+    // When recognition starts
+    recognition.onstart = function() {
+        console.log("Recognition started");
         enCoursDeReconnaissance = true;
         toggleBtn.textContent = "Arrêter la Transcription";
     };
 
-    recognition.onresult = (event) => {
+    // Handle speech results
+    recognition.onresult = function(event) {
         let texteIntermediaire = ''; // Temporary holder for interim results
         for (let i = event.resultIndex; i < event.results.length; ++i) {
             const result = event.results[i];
@@ -35,32 +38,45 @@ if ('webkitSpeechRecognition' in window) {
         scrollToEnd(); // Ensure the latest text is visible
     };
 
-    recognition.onend = () => {
-        enCoursDeReconnaissance = false;
-        toggleBtn.textContent = "Démarrer la Transcription";
-
-        // Automatically restart the recognition to maintain continuous transcription
+    // When recognition ends
+    recognition.onend = function() {
+        console.log("Recognition ended");
         if (enCoursDeReconnaissance) {
-            recognition.start();
+            console.log("Restarting recognition...");
+            recognition.start(); // Restart if it's still supposed to be active
+        } else {
+            toggleBtn.textContent = "Démarrer la Transcription";
         }
     };
 
-    toggleBtn.addEventListener('click', () => {
+    // Handle recognition errors
+    recognition.onerror = function(event) {
+        console.error("Recognition error:", event.error);
+        if (event.error === 'not-allowed') {
+            alert('Microphone access is not allowed.');
+        }
+    };
+
+    // Start/Stop transcription based on user interaction
+    toggleBtn.addEventListener('click', function() {
         if (enCoursDeReconnaissance) {
-            recognition.stop();
-            enCoursDeReconnaissance = false; // Ensure we stop properly
+            recognition.stop(); // Explicitly stop
+            enCoursDeReconnaissance = false;
         } else {
-            recognition.start();
+            console.log("Starting recognition...");
+            recognition.start(); // Start on user action
             enCoursDeReconnaissance = true;
         }
     });
 
-    clearBtn.addEventListener('click', () => {
+    // Clear the transcription text
+    clearBtn.addEventListener('click', function() {
         texteFinal = ''; // Clear the final text
         transcriptionBox.textContent = '';
     });
 
-    tailleTexteSlider.addEventListener('input', () => {
+    // Change text size
+    tailleTexteSlider.addEventListener('input', function() {
         transcriptionBox.style.fontSize = `${tailleTexteSlider.value}px`;
     });
 } else {
