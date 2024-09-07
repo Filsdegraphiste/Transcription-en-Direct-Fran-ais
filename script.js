@@ -14,12 +14,12 @@ if ('webkitSpeechRecognition' in window) {
     recognition.interimResults = true;
     recognition.continuous = true; // Continuous recognition
 
-    recognition.onstart = () => {
+    recognition.onstart = function() {
         enCoursDeReconnaissance = true;
         toggleBtn.textContent = "Arrêter la Transcription";
     };
 
-    recognition.onresult = (event) => {
+    recognition.onresult = function(event) {
         let texteIntermediaire = ''; // Temporary holder for interim results
         for (let i = event.resultIndex; i < event.results.length; ++i) {
             const result = event.results[i];
@@ -35,17 +35,12 @@ if ('webkitSpeechRecognition' in window) {
         scrollToEnd(); // Ensure the latest text is visible
     };
 
-    recognition.onend = () => {
+    recognition.onend = function() {
         enCoursDeReconnaissance = false;
         toggleBtn.textContent = "Démarrer la Transcription";
-
-        // Automatically restart the recognition to maintain continuous transcription
-        if (enCoursDeReconnaissance) {
-            recognition.start();
-        }
     };
 
-    toggleBtn.addEventListener('click', () => {
+    toggleBtn.addEventListener('click', function() {
         if (enCoursDeReconnaissance) {
             recognition.stop();
             enCoursDeReconnaissance = false; // Ensure we stop properly
@@ -56,12 +51,12 @@ if ('webkitSpeechRecognition' in window) {
         }
     });
 
-    clearBtn.addEventListener('click', () => {
+    clearBtn.addEventListener('click', function() {
         texteFinal = ''; // Clear the final text
         transcriptionBox.textContent = '';
     });
 
-    tailleTexteSlider.addEventListener('input', () => {
+    tailleTexteSlider.addEventListener('input', function() {
         transcriptionBox.style.fontSize = `${tailleTexteSlider.value}px`;
     });
 } else {
