@@ -12,7 +12,7 @@ if ('webkitSpeechRecognition' in window) {
     recognition = new webkitSpeechRecognition();
     recognition.lang = 'fr-FR';  // Langue : Français
     recognition.interimResults = true;
-    recognition.continuous = true;
+    recognition.continuous = true; // Continuous recognition
 
     recognition.onstart = () => {
         enCoursDeReconnaissance = true;
