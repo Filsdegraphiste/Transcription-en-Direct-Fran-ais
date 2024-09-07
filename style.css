@@ -31,7 +31,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100%; /* Container takes full height of the viewport */
+    height: 90%; /* Container takes full height of the viewport */
     overflow: hidden; /* Prevents overflow inside the container */
 }
 
