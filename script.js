@@ -50,6 +50,7 @@ if ('webkitSpeechRecognition' in window) {
             recognition.stop();
             enCoursDeReconnaissance = false; // Ensure we stop properly
         } else {
+            // User interaction explicitly triggers recognition
             recognition.start();
             enCoursDeReconnaissance = true;
         }
