@@ -38,13 +38,20 @@ if ('webkitSpeechRecognition' in window) {
     recognition.onend = () => {
         enCoursDeReconnaissance = false;
         toggleBtn.textContent = "Démarrer la Transcription";
+
+        // Automatically restart the recognition to maintain continuous transcription
+        if (enCoursDeReconnaissance) {
+            recognition.start();
+        }
     };
 
     toggleBtn.addEventListener('click', () => {
         if (enCoursDeReconnaissance) {
             recognition.stop();
+            enCoursDeReconnaissance = false; // Ensure we stop properly
         } else {
             recognition.start();
+            enCoursDeReconnaissance = true;
         }
     });
 
