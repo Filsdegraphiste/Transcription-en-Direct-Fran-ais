@@ -126,7 +126,7 @@ input[type="range"] {
 
     .transcription-box {
         font-size: 18px;
-        max-height: calc(100vh - 180px); /* Adjusted for smaller screens */
+        max-height: 80vh; /* Adjusted for smaller screens */
     }
 }
 
@@ -142,7 +142,7 @@ input[type="range"] {
 
     .transcription-box {
         font-size: 16px;
-        max-height: calc(100vh - 160px); /* Adjusted further for very small screens */
+        max-height: 80vh; /* Adjusted further for very small screens */
     }
 
     .text-size-control input[type="range"] {
