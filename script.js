@@ -4,7 +4,7 @@ const transcriptionBox = document.getElementById('transcription');
 const tailleTexteSlider = document.getElementById('tailleTexte');
 
 let recognition;
-let enCoursDeReconnaissance = false;
+let enCoursDeReconnaissance = false; // Track if recognition is active
 let texteFinal = ''; // To store the final results
 
 // Vérification de la compatibilité du navigateur avec SpeechRecognition API
@@ -13,16 +13,14 @@ if ('webkitSpeechRecognition' in window) {
     recognition.lang = 'fr-FR';  // Langue : Français
     recognition.interimResults = true;
     recognition.continuous = true; // Continuous recognition
-
-    // When recognition starts
-    recognition.onstart = function() {
-        console.log("Recognition started");
+    
+    recognition.onstart = function () {
         enCoursDeReconnaissance = true;
         toggleBtn.textContent = "Arrêter la Transcription";
+        console.log("Recognition started");
     };
 
-    // Handle speech results
-    recognition.onresult = function(event) {
+    recognition.onresult = function (event) {
         let texteIntermediaire = ''; // Temporary holder for interim results
         for (let i = event.resultIndex; i < event.results.length; ++i) {
             const result = event.results[i];
@@ -38,45 +36,40 @@ if ('webkitSpeechRecognition' in window) {
         scrollToEnd(); // Ensure the latest text is visible
     };
 
-    // When recognition ends
-    recognition.onend = function() {
+    recognition.onend = function () {
         console.log("Recognition ended");
-        if (enCoursDeReconnaissance) {
-            console.log("Restarting recognition...");
-            recognition.start(); // Restart if it's still supposed to be active
-        } else {
-            toggleBtn.textContent = "Démarrer la Transcription";
-        }
+        enCoursDeReconnaissance = false; // Set recognition to inactive
+        toggleBtn.textContent = "Démarrer la Transcription";
     };
 
-    // Handle recognition errors
-    recognition.onerror = function(event) {
+    recognition.onerror = function (event) {
         console.error("Recognition error:", event.error);
         if (event.error === 'not-allowed') {
-            alert('Microphone access is not allowed.');
+            alert('Microphone access is not allowed. Please enable microphone permissions.');
         }
     };
 
     // Start/Stop transcription based on user interaction
-    toggleBtn.addEventListener('click', function() {
+    toggleBtn.addEventListener('click', function () {
         if (enCoursDeReconnaissance) {
             recognition.stop(); // Explicitly stop
             enCoursDeReconnaissance = false;
+            console.log("Recognition stopped");
         } else {
-            console.log("Starting recognition...");
             recognition.start(); // Start on user action
             enCoursDeReconnaissance = true;
+            console.log("Starting recognition...");
         }
     });
 
     // Clear the transcription text
-    clearBtn.addEventListener('click', function() {
+    clearBtn.addEventListener('click', function () {
         texteFinal = ''; // Clear the final text
         transcriptionBox.textContent = '';
     });
 
     // Change text size
-    tailleTexteSlider.addEventListener('input', function() {
+    tailleTexteSlider.addEventListener('input', function () {
         transcriptionBox.style.fontSize = `${tailleTexteSlider.value}px`;
     });
 } else {
