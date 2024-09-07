@@ -32,7 +32,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: calc(100vh - 20px); /* Ensure the container height fits the viewport with some margin */
+    height: 80vh; /* Ensure the container height fits the viewport with some margin */
     overflow: hidden;
 }
 
