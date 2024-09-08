@@ -41,9 +41,20 @@ if ('webkitSpeechRecognition' in window) {
     };
 
     recognition.onerror = function (event) {
-        console.error("Recognition error:", event.error);
+        console.log("Recognition error event:", event);
+
         if (event.error === 'not-allowed') {
             alert('Microphone access is not allowed. Please enable microphone permissions.');
+        } else if (event.error === 'network') {
+            alert('Network error occurred. Please check your internet connection.');
+        } else if (event.error === 'no-speech' || event.error === 'audio-capture') {
+            alert('No speech detected or microphone issue. Please try again.');
+        } else {
+            alert('An unexpected error occurred: ' + event.error);
+            recognition.stop();
+            setTimeout(() => {
+                recognition.start();  // Try to restart the recognition process after a short delay
+            }, 1000);
         }
     };
 
