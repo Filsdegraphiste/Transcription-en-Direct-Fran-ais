@@ -7,7 +7,7 @@ let recognition;
 let enCoursDeReconnaissance = false; // Track if recognition is active
 let texteFinal = ''; // Store the final results
 let pauseTimeout;  // Timeout to track pauses
-const PAUSE_DURATION = 2000; // 2 seconds
+const PAUSE_DURATION = 1000; // 1 second pause
 
 // Vérification de la compatibilité du navigateur avec SpeechRecognition API
 if ('webkitSpeechRecognition' in window) {
@@ -38,11 +38,11 @@ if ('webkitSpeechRecognition' in window) {
         transcriptionBox.textContent = texteFinal + ' ' + texteIntermediaire;
         scrollToEnd(); // Ensure the latest text is visible by scrolling
 
-        // Set a timeout to add a period after 2 seconds of silence
+        // Set a timeout to add a period and a line break after 1 second of silence
         pauseTimeout = setTimeout(() => {
             if (!texteFinal.endsWith('.')) {
-                texteFinal += '.';
-                transcriptionBox.textContent = texteFinal;  // Update the display with the period
+                texteFinal += '.<br><br>';  // Add a period followed by a line break
+                transcriptionBox.innerHTML = texteFinal;  // Update the display with the period and line break
             }
         }, PAUSE_DURATION);
     };
