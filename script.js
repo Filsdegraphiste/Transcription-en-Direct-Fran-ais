@@ -68,7 +68,7 @@ if ('webkitSpeechRecognition' in window) {
 
     // Change text size
     tailleTexteSlider.addEventListener('input', function () {
-        transcriptionBox.style.fontSize = ${tailleTexteSlider.value}px;
+        transcriptionBox.style.fontSize = `${tailleTexteSlider.value}px`;
     });
 } else {
     alert('La reconnaissance vocale n\'est pas supportée dans ce navigateur. Essayez avec Google Chrome.');
