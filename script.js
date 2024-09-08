@@ -38,11 +38,11 @@ if ('webkitSpeechRecognition' in window) {
         transcriptionBox.textContent = texteFinal + ' ' + texteIntermediaire;
         scrollToEnd(); // Ensure the latest text is visible by scrolling
 
-        // Set a timeout to add a period and a line break after 1 second of silence
+        // Set a timeout to add a period after 1 second of silence
         pauseTimeout = setTimeout(() => {
             if (!texteFinal.endsWith('.')) {
-                texteFinal += '.<br><br>';  // Add a period followed by a line break
-                transcriptionBox.innerHTML = texteFinal;  // Update the display with the period and line break
+                texteFinal += '.';  // Add a period
+                transcriptionBox.textContent = texteFinal;  // Update the display with the period
             }
         }, PAUSE_DURATION);
     };
